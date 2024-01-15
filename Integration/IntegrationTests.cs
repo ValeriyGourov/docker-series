@@ -34,15 +34,6 @@ namespace Integration
 		{
 			// Act
 			var response = await _context.Client.GetAsync("/api/owner");
-
-			//////////////////////////////////////////////
-			// TODO: Удалить!
-			string content = await response.Content.ReadAsStringAsync();
-			Console.WriteLine(content);
-			await Console.Out.WriteLineAsync(content);
-			Trace.WriteLine(content);
-			//////////////////////////////////////////////
-
 			response.EnsureSuccessStatusCode();
 
 			// Assert

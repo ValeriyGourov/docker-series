@@ -41,11 +41,8 @@ namespace AccountOwnerServer.Controllers
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex.Message);  // TODO: Удалить!
-
 				_logger.LogError($"Something went wrong inside GetAllOwners action: {ex.Message}");
-				//return StatusCode(500, "Internal server error");
-				return StatusCode(500, ex.Message);  // TODO: Удалить!
+				return StatusCode(500, "Internal server error");
 			}
 		}
 
