@@ -43,6 +43,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.Integration
+    environment:
+      - TEAMCITY_PROJECT_NAME
 
 volumes:
     dbdata:
