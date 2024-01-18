@@ -16,14 +16,12 @@ services:
   accountownerapp:
     depends_on:
       - db
-    image: localhost:50000/codemazeblog/accountowner:build-8
-    # image: my-registry:50000/codemazeblog/accountownerapp:build-8
+    image: localhost:50000/codemazeblog/accountowner:build-${BUILD_NUMBER_ACCOUNTOWNER}
 
   integration:
     depends_on:
       - accountownerapp
     image: localhost:50000/codemazeblog/accountowner:test
-    # image: my-registry:50000/codemazeblog/accountownerapp:test
     build:
       context: .
       dockerfile: Dockerfile.Integration
