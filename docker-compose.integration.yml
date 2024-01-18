@@ -27,10 +27,18 @@ services:
     # depends_on:
     #   - db
     image: localhost:50000/codemazeblog/accountowner:build-${BUILD_NUMBER_ACCOUNTOWNER}
+    healthcheck:
+      test: curl --silent --fail http://localhost:5000/health || exit 1
+      interval: 5s
+      timeout: 10s
+      retries: 3
 
   integration:
     depends_on:
-      - accountownerapp
+      accountownerapp:
+        condition: service_healthy
+    # depends_on:
+    #   - accountownerapp
     image: localhost:50000/codemazeblog/accountowner:test
     build:
       context: .
