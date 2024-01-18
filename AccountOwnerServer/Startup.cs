@@ -1,5 +1,9 @@
+using System.IO;
+
 using AccountOwnerServer.Extensions;
+
 using AutoMapper;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -7,8 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+
 using NLog;
-using System.IO;
 
 namespace AccountOwnerServer
 {
@@ -41,6 +45,8 @@ namespace AccountOwnerServer
 			});
 
 			services.AddControllers();
+
+			services.AddHealthChecks();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -78,6 +84,8 @@ namespace AccountOwnerServer
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "AccountOwner API V1");
 			});
+
+			app.UseHealthChecks("/health");
 		}
 	}
 }
