@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.9'
 
 services:
   db:
@@ -12,10 +12,20 @@ services:
       - dbdata:/var/lib/mysql
       - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
     restart: always
+    healthcheck:
+      test: mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   accountownerapp:
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+        # restart: true
+    # depends_on:
+    #   - db
     image: localhost:50000/codemazeblog/accountowner:build-${BUILD_NUMBER_ACCOUNTOWNER}
 
   integration:
