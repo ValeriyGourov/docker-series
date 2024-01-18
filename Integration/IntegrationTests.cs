@@ -29,7 +29,7 @@ namespace Integration
 			_context = new TestContext();
 		}
 
-		[Fact(DisplayName = "РџСЂРё РїРѕР»СѓС‡РµРЅРёРё РІСЃРµС… РІР»Р°РґРµР»СЊС†РµРІ РґРѕР»Р¶РµРЅ РІРѕР·РІСЂР°С‰Р°С‚СЊСЃСЏ РѕС‚РІРµС‚ OK")]
+		[Fact(DisplayName = "При получении всех владельцев должен возвращаться ответ OK")]
 		public async Task GetAllOwners_ReturnsOkResponse()
 		{
 			// Act
@@ -50,8 +50,7 @@ namespace Integration
 			var owners = JsonConvert.DeserializeObject<List<Owner>>(responseString);
 
 			// Assert
-			Assert.Empty(owners);
-			//Assert.NotEmpty(owners);
+			Assert.NotEmpty(owners);
 		}
 	}
 }
