@@ -29,7 +29,7 @@ namespace Integration
 			_context = new TestContext();
 		}
 
-		[Fact]
+		[Fact(DisplayName = "При получении всех владельцев должен возвращаться ответ OK")]
 		public async Task GetAllOwners_ReturnsOkResponse()
 		{
 			// Act
