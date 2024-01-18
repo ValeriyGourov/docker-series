@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -29,7 +29,7 @@ namespace Integration
 			_context = new TestContext();
 		}
 
-		[Fact(DisplayName = "При получении всех владельцев должен возвращаться ответ OK")]
+		[Fact(DisplayName = "РџСЂРё РїРѕР»СѓС‡РµРЅРёРё РІСЃРµС… РІР»Р°РґРµР»СЊС†РµРІ РґРѕР»Р¶РµРЅ РІРѕР·РІСЂР°С‰Р°С‚СЊСЃСЏ РѕС‚РІРµС‚ OK")]
 		public async Task GetAllOwners_ReturnsOkResponse()
 		{
 			// Act
