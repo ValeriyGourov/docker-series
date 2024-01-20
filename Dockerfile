@@ -10,6 +10,7 @@ RUN dotnet restore
 
 COPY . .
 
+ENV TEAMCITY_PROJECT_NAME=${TEAMCITY_PROJECT_NAME}
 RUN dotnet test --verbosity=normal ./Tests/Tests.csproj
 
 RUN dotnet publish ./AccountOwnerServer/AccountOwnerServer.csproj -o /publish/
