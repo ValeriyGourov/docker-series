@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as build-image
 
-ARG TeamCityProjectName
+#ARG TeamCityProjectName
 
 WORKDIR /home/app
 
@@ -12,7 +12,7 @@ RUN dotnet restore
 
 COPY . .
 
-#ARG TEAMCITY_PROJECT_NAME
+ARG TEAMCITY_PROJECT_NAME
 #ENV TEAMCITY_PROJECT_NAME=${TEAMCITY_PROJECT_NAME}
 #ENV TEAMCITY_PROJECT_NAME=$TeamCityProjectName
 #ENV TEAMCITY_PROJECT_NAME=${TEAMCITY_PROJECT_NAME}
