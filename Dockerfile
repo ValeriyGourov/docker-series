@@ -1,4 +1,6 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as build-image
+п»їFROM mcr.microsoft.com/dotnet/sdk:8.0 as build-image
+
+EXPOSE 8080
 
 WORKDIR /home/app
 
@@ -10,18 +12,21 @@ RUN dotnet restore
 
 COPY . .
 
-# Для вывода данных о тестировании xUnit ориентируется на значение переменной окружения
-# TEAMCITY_PROJECT_NAME, которое должно быть передано из TeamCity. Тесты запускаются в
-# промежуточном этапе сборки образа и переменная окружения TEAMCITY_PROJECT_NAME здесь
-# недоступна. Её нужно передать как аргумент комендной строки при сборке образа в параметре
-# "Additional arguments for the command" шага docker build:
+# Р”Р»СЏ РІС‹РІРѕРґР° РґР°РЅРЅС‹С… Рѕ С‚РµСЃС‚РёСЂРѕРІР°РЅРёРё xUnit РѕСЂРёРµРЅС‚РёСЂСѓРµС‚СЃСЏ РЅР° Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ РѕРєСЂСѓР¶РµРЅРёСЏ
+# TEAMCITY_PROJECT_NAME, РєРѕС‚РѕСЂРѕРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРµСЂРµРґР°РЅРѕ РёР· TeamCity. РўРµСЃС‚С‹ Р·Р°РїСѓСЃРєР°СЋС‚СЃСЏ РІ
+# РїСЂРѕРјРµР¶СѓС‚РѕС‡РЅРѕРј СЌС‚Р°РїРµ СЃР±РѕСЂРєРё РѕР±СЂР°Р·Р° Рё РїРµСЂРµРјРµРЅРЅР°СЏ РѕРєСЂСѓР¶РµРЅРёСЏ TEAMCITY_PROJECT_NAME Р·РґРµСЃСЊ
+# РЅРµРґРѕСЃС‚СѓРїРЅР°. Р•С‘ РЅСѓР¶РЅРѕ РїРµСЂРµРґР°С‚СЊ РєР°Рє Р°СЂРіСѓРјРµРЅС‚ РєРѕРјРµРЅРґРЅРѕР№ СЃС‚СЂРѕРєРё РїСЂРё СЃР±РѕСЂРєРµ РѕР±СЂР°Р·Р° РІ РїР°СЂР°РјРµС‚СЂРµ
+# "Additional arguments for the command" С€Р°РіР° docker build:
 #	--build-arg TEAMCITY_PROJECT_NAME='%env.TEAMCITY_PROJECT_NAME%'
-# Если аргумент будет назван как и переменная окружения (TEAMCITY_PROJECT_NAME), то никаких
-# дополнительных телодвижений делать не нужно.
+# Р•СЃР»Рё Р°СЂРіСѓРјРµРЅС‚ Р±СѓРґРµС‚ РЅР°Р·РІР°РЅ РєР°Рє Рё РїРµСЂРµРјРµРЅРЅР°СЏ РѕРєСЂСѓР¶РµРЅРёСЏ (TEAMCITY_PROJECT_NAME), С‚Рѕ РЅРёРєР°РєРёС…
+# РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹С… С‚РµР»РѕРґРІРёР¶РµРЅРёР№ РґРµР»Р°С‚СЊ РЅРµ РЅСѓР¶РЅРѕ.
 ARG TEAMCITY_PROJECT_NAME
-# Чтобы xUnit выводил сведения о тестах необходимо повысить уровень подробности сведений до
+
+RUN if [ ! -z "${TEAMCITY_PROJECT_NAME}" ]; then \
+# Р§С‚РѕР±С‹ xUnit РІС‹РІРѕРґРёР» СЃРІРµРґРµРЅРёСЏ Рѕ С‚РµСЃС‚Р°С… РЅРµРѕР±С…РѕРґРёРјРѕ РїРѕРІС‹СЃРёС‚СЊ СѓСЂРѕРІРµРЅСЊ РїРѕРґСЂРѕР±РЅРѕСЃС‚Рё СЃРІРµРґРµРЅРёР№ РґРѕ
 #	--verbosity=normal
-RUN dotnet test --verbosity=normal ./Tests/Tests.csproj
+RUN dotnet test --verbosity=normal ./Tests/Tests.csproj; \
+	fi
 
 RUN dotnet publish ./AccountOwnerServer/AccountOwnerServer.csproj -o /publish/
 
@@ -30,7 +35,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /publish
 
 COPY --from=build-image /publish .
-
-ENV ASPNETCORE_URLS="http://0.0.0.0:5000"
 
 ENTRYPOINT ["dotnet", "AccountOwnerServer.dll"]

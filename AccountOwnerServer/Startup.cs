@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 
 using AccountOwnerServer.Extensions;
 
@@ -56,8 +56,8 @@ namespace AccountOwnerServer
 				app.UseDeveloperExceptionPage();
 			}
 
-			app.UseHttpsRedirection();
-			app.UseStaticFiles();
+			//app.UseHttpsRedirection();
+			//app.UseStaticFiles();
 
 			app.UseCors("CorsPolicy");
 
