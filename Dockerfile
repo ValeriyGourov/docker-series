@@ -1,3 +1,5 @@
+ARG TeamCityProjectName
+
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as build-image
 
 WORKDIR /home/app
@@ -10,7 +12,8 @@ RUN dotnet restore
 
 COPY . .
 
-ENV TEAMCITY_PROJECT_NAME=${TEAMCITY_PROJECT_NAME}
+ENV TEAMCITY_PROJECT_NAME=$TeamCityProjectName
+#ENV TEAMCITY_PROJECT_NAME=${TEAMCITY_PROJECT_NAME}
 RUN dotnet test --verbosity=normal ./Tests/Tests.csproj
 
 RUN dotnet publish ./AccountOwnerServer/AccountOwnerServer.csproj -o /publish/
@@ -22,6 +25,7 @@ WORKDIR /publish
 COPY --from=build-image /publish .
 
 ENV ASPNETCORE_URLS="http://0.0.0.0:5000"
-ENV TEAMCITY_PROJECT_NAME=${TEAMCITY_PROJECT_NAME}
+ENV TEAMCITY_PROJECT_NAME=$TeamCityProjectName
+#ENV TEAMCITY_PROJECT_NAME=${TEAMCITY_PROJECT_NAME}
 
 ENTRYPOINT ["dotnet", "AccountOwnerServer.dll"]
