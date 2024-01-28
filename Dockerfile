@@ -22,12 +22,15 @@ COPY . .
 # дополнительных телодвижений делать не нужно.
 ARG TEAMCITY_PROJECT_NAME
 
-RUN if [ ! -z "${TEAMCITY_PROJECT_NAME}" ]; then \
 # Чтобы xUnit выводил сведения о тестах необходимо повысить уровень подробности сведений до
 #	--verbosity=normal
-RUN dotnet test --verbosity=normal ./Tests/Tests.csproj; \
-	fi
-
+RUN dotnet test --verbosity=normal ./Tests/Tests.csproj
+#RUN if [ ! -z "${TEAMCITY_PROJECT_NAME}" ]; then \
+## Чтобы xUnit выводил сведения о тестах необходимо повысить уровень подробности сведений до
+##	--verbosity=normal
+#RUN dotnet test --verbosity=normal ./Tests/Tests.csproj; \
+	#fi
+#
 RUN dotnet publish ./AccountOwnerServer/AccountOwnerServer.csproj -o /publish/
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
