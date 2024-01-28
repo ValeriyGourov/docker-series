@@ -1,6 +1,6 @@
-ARG TeamCityProjectName
-
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as build-image
+
+ARG TeamCityProjectName
 
 WORKDIR /home/app
 
