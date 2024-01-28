@@ -38,6 +38,9 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 RUN apt-get update \
 	&& apt-get install -y curl
 
+# Решение проблемы "SSL Handshake failed with OpenSSL error - SSL_ERROR_SSL" при подключении к MySQL.
+RUN sed -i '1i openssl_conf = default_conf' /etc/ssl/openssl.cnf && echo -e "\n[ default_conf ]\nssl_conf = ssl_sect\n[ssl_sect]\nsystem_default = system_default_sect\n[system_default_sect]\nMinProtocol = TLSv1\nCipherString = DEFAULT:@SECLEVEL=1" >> /etc/ssl/openssl.cnf
+
 WORKDIR /publish
 
 COPY --from=build-image /publish .
