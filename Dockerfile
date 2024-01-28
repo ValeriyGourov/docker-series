@@ -35,6 +35,9 @@ RUN dotnet publish ./AccountOwnerServer/AccountOwnerServer.csproj -o /publish/
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
+RUN apt-get update \
+	&& apt-get install -y curl
+
 WORKDIR /publish
 
 COPY --from=build-image /publish .
