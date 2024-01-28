@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as build-image
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as build-image
 
 WORKDIR /home/app
 
@@ -25,7 +25,7 @@ RUN dotnet test --verbosity=normal ./Tests/Tests.csproj
 
 RUN dotnet publish ./AccountOwnerServer/AccountOwnerServer.csproj -o /publish/
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
 WORKDIR /publish
 
