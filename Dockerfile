@@ -14,6 +14,9 @@ COPY . .
 
 ENV TEAMCITY_PROJECT_NAME=$TeamCityProjectName
 #ENV TEAMCITY_PROJECT_NAME=${TEAMCITY_PROJECT_NAME}
+RUN echo "TeamCityProjectName $TeamCityProjectName"
+RUN echo "TEAMCITY_PROJECT_NAME TEAMCITY_PROJECT_NAME"
+
 RUN dotnet test --verbosity=normal ./Tests/Tests.csproj
 
 RUN dotnet publish ./AccountOwnerServer/AccountOwnerServer.csproj -o /publish/
@@ -27,5 +30,7 @@ COPY --from=build-image /publish .
 ENV ASPNETCORE_URLS="http://0.0.0.0:5000"
 ENV TEAMCITY_PROJECT_NAME=$TeamCityProjectName
 #ENV TEAMCITY_PROJECT_NAME=${TEAMCITY_PROJECT_NAME}
+RUN echo "TeamCityProjectName $TeamCityProjectName"
+RUN echo "TEAMCITY_PROJECT_NAME TEAMCITY_PROJECT_NAME"
 
 ENTRYPOINT ["dotnet", "AccountOwnerServer.dll"]
